@@ -23,6 +23,9 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	//Open the door
+	virtual void OpenDoor();
+
 private:
 
 	UPROPERTY(VisibleAnywhere)
@@ -30,4 +33,6 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	ATriggerVolume* PressurePlate;
+
+	AActor* ActorThatOpens; // Remember pawn inherits from Actor
 };
