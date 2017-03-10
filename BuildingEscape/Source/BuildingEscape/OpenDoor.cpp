@@ -21,19 +21,19 @@ void UOpenDoor::BeginPlay()
 	Super::BeginPlay();
 	
 	this->ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
+	this->Owner = GetOwner();
 }
 
-void UOpenDoor::OpenDoor() {
 
-	// Find the owning object
-	AActor* Owner = GetOwner();
-	//create a roator
-	FRotator NewRotation = FRotator(0.0f, 60.0f, 0.0f);
-	//set the door rotation
-	Owner->SetActorRotation(NewRotation);
-
+void UOpenDoor::OpenDoor() 
+{
+	Owner->SetActorRotation(FRotator(0.0f, OpenAngle, 0.0f));
 }
 
+void UOpenDoor::CloseDoor() 
+{
+	Owner->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
+}
 
 
 
@@ -45,9 +45,13 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	if (PressurePlate->IsOverlappingActor(ActorThatOpens)) 
 	{
 		OpenDoor();
-		UE_LOG(LogTemp, Warning, TEXT("OPENING DOOR"));
-
+		LastDoorOpenTime = GetWorld()->GetTimeSeconds();
 	}
 	// if the ActorThatOpens is in the volume
+
+	//Check if it's time to close the door
+	if (GetWorld()->GetTimeSeconds() - LastDoorOpenTime > this->DoorCloseDelay) {
+		CloseDoor();
+	}
 }
 

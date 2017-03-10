@@ -10,3 +10,4 @@ BuildingEscape/Content/StarterContent/
 
 #VS Generated file
 *.VC.db
+*.suo
